@@ -1,2 +1,6 @@
-package com.jwt.sample.enums;public enum UserRole {
+package com.jwt.sample.enums;
+
+public enum UserRole {
+    DEFAULT,
+    ADMIN;
 }
