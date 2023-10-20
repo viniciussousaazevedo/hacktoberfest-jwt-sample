@@ -1,4 +1,4 @@
-package com.jwt.sample.controller;
+package com.jwt.sample.DTO;
 
 import com.jwt.sample.enums.UserRole;
 import lombok.*;

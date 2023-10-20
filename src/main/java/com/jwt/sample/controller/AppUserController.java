@@ -1,6 +1,7 @@
 package com.jwt.sample.controller;
 
 
+import com.jwt.sample.DTO.UserDTO;
 import com.jwt.sample.DTO.UserRegistrationDTO;
 import com.jwt.sample.model.AppUser;
 import com.jwt.sample.service.AppUserService;
@@ -25,7 +26,7 @@ public class AppUserController {
 
     TokenManagerService tokenDecoder;
 
-    @PostMapping("/cadastro")
+    @PostMapping()
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
 
         AppUser appUser = this.appUserService.registerUser(userRegistrationDTO);
@@ -33,6 +34,10 @@ public class AppUserController {
 
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
+
+    // TODO: Who am I?
+
+    // TODO: Forgot password
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
