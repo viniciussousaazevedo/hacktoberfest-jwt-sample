@@ -14,4 +14,7 @@ public interface AppUserService extends UserDetailsService {
     void saveUser(AppUser appUser);
 
     void checkPasswordConfirmation(String password, String passwordConfirmation);
+
+    void forgotPassword(String username);
+
 }

@@ -11,7 +11,8 @@ public class TokenConstants {
     public static final List<String> NO_TOKEN_ENDPOINTS = List.of(
             "/api/login",
             "/api/usuario/cadastro",
-            "/api/usuario/token/refresh"
+            "/api/usuario/token/refresh",
+            "/api/usuario/esqueci-senha"
     );
 
     public static final String BEARER = "Bearer ";

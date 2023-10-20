@@ -26,7 +26,7 @@ public class AppUserController {
 
     TokenManagerService tokenDecoder;
 
-    @PostMapping()
+    @PostMapping("/cadastro")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
 
         AppUser appUser = this.appUserService.registerUser(userRegistrationDTO);
@@ -37,7 +37,11 @@ public class AppUserController {
 
     // TODO: Who am I?
 
-    // TODO: Forgot password
+    @GetMapping("esqueci-senha")
+    public ResponseEntity<?> forgotPassword(@RequestBody String username) {
+        this.appUserService.forgotPassword(username);
+        return ResponseEntity.ok("Será enviado um link no seu e-mail para trocar a senha :)");
+    }
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
