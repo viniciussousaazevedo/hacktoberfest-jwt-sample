@@ -1,5 +1,6 @@
 package com.jwt.sample.service;
 
+import com.jwt.sample.DTO.UserDTO;
 import com.jwt.sample.DTO.NewPasswordDTO;
 import com.jwt.sample.DTO.UserRegistrationDTO;
 import com.jwt.sample.enums.UserRole;
@@ -81,6 +82,14 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    public AppUser updateUser(UserDTO userDTO) {
+        AppUser appUser = getUser(userDTO.getUsername());
+        appUser.setName(userDTO.getName());
+        appUser.setUserRole(userDTO.getUserRole());
+
+        return this.appUserRepository.save(appUser);
+    }
+
     public String forgotPassword(String username) {
         AppUser user = this.appUserRepository.findByUsername(username).orElseThrow(() -> new ApiRequestException(USER_NOT_FOUND));
 

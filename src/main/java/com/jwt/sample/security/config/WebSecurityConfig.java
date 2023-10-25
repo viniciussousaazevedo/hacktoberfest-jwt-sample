@@ -1,6 +1,7 @@
 package com.jwt.sample.security.config;
 
 
+import com.jwt.sample.enums.UserRole;
 import com.jwt.sample.security.filter.CustomAuthenticationFilter;
 import com.jwt.sample.security.filter.CustomAuthorizationFilter;
 import com.jwt.sample.service.AppUserService;
@@ -24,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.jwt.sample.security.config.TokenConstants.*;
+import static org.springframework.http.HttpMethod.PUT;
 
 @Configuration
 @AllArgsConstructor
@@ -48,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        AUTHORED ENDPOINT EXAMPLE
 //        http.authorizeRequests().antMatchers(GET, "/api/publicacao/analise" + PERMIT_ALL_AFTER).hasAnyAuthority(UserRole.ADMINISTRADOR.name());
+        http.authorizeRequests().antMatchers(PUT, "/api/usuario/atualizar").hasAnyAuthority(UserRole.ADMIN.name());
 
 
         http.authorizeRequests().anyRequest().authenticated();

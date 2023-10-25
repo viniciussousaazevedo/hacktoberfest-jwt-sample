@@ -51,10 +51,13 @@ public class AppUserController {
         return ResponseEntity.ok(this.appUserService.forgotPassword(username));
     }
 
+    @PutMapping("/atualizar")
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO user) {
+        return ResponseEntity.ok(this.modelMapper.map(appUserService.updateUser(user), UserDTO.class));
+  
     @PostMapping("/esqueci-senha/{token}")
     public ResponseEntity<?> changePassword(@PathVariable String token, @RequestBody NewPasswordDTO newPasswordDTO) {
         return ResponseEntity.ok(appUserService.changePassword(token, newPasswordDTO));
-    }
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
