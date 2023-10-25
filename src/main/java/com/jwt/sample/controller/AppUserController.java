@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,11 +38,12 @@ public class AppUserController {
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
-    // TODO: Who am I?
-
-    // TODO: Forgot password
-
-    // TODO: update user with role DEFAULT
+    @GetMapping
+    public ResponseEntity<?> whoAmI() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AppUser user = this.appUserService.getUser((String) authentication.getPrincipal());
+        return ResponseEntity.ok(user);
+    }
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
