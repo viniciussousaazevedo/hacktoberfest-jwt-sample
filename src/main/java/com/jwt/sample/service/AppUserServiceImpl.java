@@ -1,5 +1,6 @@
 package com.jwt.sample.service;
 
+import com.jwt.sample.DTO.NewPasswordDTO;
 import com.jwt.sample.DTO.UserRegistrationDTO;
 import com.jwt.sample.enums.UserRole;
 import com.jwt.sample.exception.ApiRequestException;
@@ -29,6 +30,8 @@ public class AppUserServiceImpl implements AppUserService {
     private static final String UNMATCHED_PASSWORDS = "A senha informada não coincide com a confirmação de senha";
     private static final int MINUTES_FOR_PASS_REC_TOKEN_EXPIRATION = 10;
 
+    private static final String USER_TOKEN_EXPIRED = "Seu link expirou. Por favor, solicite a troca de senha novamente";
+
     private final JavaMailSender emailSender;
     AppUserRepository appUserRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -48,9 +51,9 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public AppUser registerUser(UserRegistrationDTO userRegistrationDTO) {
         this.checkUsername(userRegistrationDTO.getUsername());
-        this.checkPasswordConfirmation(userRegistrationDTO.getPassword(), userRegistrationDTO.getPasswordConfirmation());
+        this.checkPasswordConfirmation(userRegistrationDTO.getNewPasswordDTO().getPassword(), userRegistrationDTO.getNewPasswordDTO().getPasswordConfirmation());
 
-        userRegistrationDTO.setPassword(bCryptPasswordEncoder.encode(userRegistrationDTO.getPassword()));
+        userRegistrationDTO.getNewPasswordDTO().setPassword(bCryptPasswordEncoder.encode(userRegistrationDTO.getNewPasswordDTO().getPassword()));
 
         AppUser appUser = this.modelMapper.map(userRegistrationDTO, AppUser.class);
         appUser.setUserRole(UserRole.DEFAULT);
@@ -78,16 +81,31 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void forgotPassword(String username) {
+    public String forgotPassword(String username) {
         AppUser user = this.appUserRepository.findByUsername(username).orElseThrow(() -> new ApiRequestException(USER_NOT_FOUND));
 
         user.setRecoveryPasswordToken(UUID.randomUUID().toString());
         user.setRecoveryPasswordTokenExpiration(new Date(System.currentTimeMillis() + MINUTES_FOR_PASS_REC_TOKEN_EXPIRATION * 60 * 1000));
         this.saveUser(user);
-        this.sendEmail(user);
+//        this.sendPasswordRecoveryEmail(user);
+        return "Foi enviado um e-mail com o link para troca de senha que deve expirar em breve.";
     }
 
-    private void sendEmail(AppUser user) {
+    @Override
+    public String changePassword(String token, NewPasswordDTO newPasswordDTO) {
+        AppUser appUser = this.appUserRepository.findByRecoveryPasswordToken(token)
+                .orElseThrow(() -> new ApiRequestException(USER_NOT_FOUND));
+        if (appUser.getRecoveryPasswordTokenExpiration().before(new Date())) {
+            throw new ApiRequestException(USER_TOKEN_EXPIRED);
+        }
+        checkPasswordConfirmation(newPasswordDTO.getPassword(), newPasswordDTO.getPasswordConfirmation());
+
+        appUser.setPassword(bCryptPasswordEncoder.encode(newPasswordDTO.getPassword()));
+        this.saveUser(appUser);
+        return "Senha trocada com sucesso. Realize o login novamente.";
+    }
+
+    private void sendPasswordRecoveryEmail(AppUser user) {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(System.getenv("SPRING_MAIL_USER"));

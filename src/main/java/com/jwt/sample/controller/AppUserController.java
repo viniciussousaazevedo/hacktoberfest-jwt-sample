@@ -1,6 +1,7 @@
 package com.jwt.sample.controller;
 
 
+import com.jwt.sample.DTO.NewPasswordDTO;
 import com.jwt.sample.DTO.UserDTO;
 import com.jwt.sample.DTO.UserRegistrationDTO;
 import com.jwt.sample.model.AppUser;
@@ -39,8 +40,12 @@ public class AppUserController {
 
     @GetMapping("esqueci-senha")
     public ResponseEntity<?> forgotPassword(@RequestBody String username) {
-        this.appUserService.forgotPassword(username);
-        return ResponseEntity.ok("Será enviado um link no seu e-mail para trocar a senha :)");
+        return ResponseEntity.ok(this.appUserService.forgotPassword(username));
+    }
+
+    @PostMapping("/esqueci-senha/{token}")
+    public ResponseEntity<?> changePassword(@PathVariable String token, @RequestBody NewPasswordDTO newPasswordDTO) {
+        return ResponseEntity.ok(appUserService.changePassword(token, newPasswordDTO));
     }
 
     @GetMapping("/token/refresh")
