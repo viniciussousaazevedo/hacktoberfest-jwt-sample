@@ -36,6 +36,10 @@ public class AppUser implements UserDetails {
 
     private Boolean enabled = true;
 
+    private String recoveryPasswordToken;
+
+    private Date recoveryPasswordTokenExpiration;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());

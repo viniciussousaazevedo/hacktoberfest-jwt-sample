@@ -46,10 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        NO_TOKEN_ENDPOINTS.forEach(
-                endpoint -> endpoint += PERMIT_ALL_AFTER
-        );
-
         http.authorizeRequests().antMatchers(NO_TOKEN_ENDPOINTS.toArray(new String[0])).permitAll();
 
 //        AUTHORED ENDPOINT EXAMPLE
