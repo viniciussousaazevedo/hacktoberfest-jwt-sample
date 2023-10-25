@@ -48,6 +48,8 @@ public class AppUserController {
         return ResponseEntity.ok(appUserService.changePassword(token, newPasswordDTO));
     }
 
+    // TODO: Update users with DEFAULT role
+
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         this.tokenDecoder.refreshToken(request, response);
