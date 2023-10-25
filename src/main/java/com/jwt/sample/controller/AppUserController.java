@@ -1,6 +1,7 @@
 package com.jwt.sample.controller;
 
 
+import com.jwt.sample.DTO.NewPasswordDTO;
 import com.jwt.sample.DTO.UserDTO;
 import com.jwt.sample.DTO.UserRegistrationDTO;
 import com.jwt.sample.model.AppUser;
@@ -29,7 +30,7 @@ public class AppUserController {
 
     TokenManagerService tokenDecoder;
 
-    @PostMapping()
+    @PostMapping("/cadastro")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
 
         AppUser appUser = this.appUserService.registerUser(userRegistrationDTO);
@@ -37,12 +38,22 @@ public class AppUserController {
 
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
-
-    @GetMapping
+  
+   @GetMapping
     public ResponseEntity<?> whoAmI() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser user = this.appUserService.getUser((String) authentication.getPrincipal());
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("esqueci-senha")
+    public ResponseEntity<?> forgotPassword(@RequestBody String username) {
+        return ResponseEntity.ok(this.appUserService.forgotPassword(username));
+    }
+
+    @PostMapping("/esqueci-senha/{token}")
+    public ResponseEntity<?> changePassword(@PathVariable String token, @RequestBody NewPasswordDTO newPasswordDTO) {
+        return ResponseEntity.ok(appUserService.changePassword(token, newPasswordDTO));
     }
 
     @GetMapping("/token/refresh")
