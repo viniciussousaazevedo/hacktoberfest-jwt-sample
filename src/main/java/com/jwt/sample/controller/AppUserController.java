@@ -39,7 +39,10 @@ public class AppUserController {
 
     // TODO: Forgot password
 
-    // TODO: update user with role DEFAULT
+    @PutMapping("/atualizar")
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO user) {
+        return ResponseEntity.ok(this.modelMapper.map(appUserService.updateUser(user), UserDTO.class));
+    }
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {

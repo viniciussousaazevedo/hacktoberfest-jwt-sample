@@ -1,5 +1,6 @@
 package com.jwt.sample.service;
 
+import com.jwt.sample.DTO.UserDTO;
 import com.jwt.sample.DTO.UserRegistrationDTO;
 import com.jwt.sample.enums.UserRole;
 import com.jwt.sample.exception.ApiRequestException;
@@ -68,5 +69,14 @@ public class AppUserServiceImpl implements AppUserService {
         if (!password.equals(passwordConfirmation)) {
             throw new ApiRequestException(UNMATCHED_PASSWORDS);
         }
+    }
+
+    @Override
+    public AppUser updateUser(UserDTO userDTO) {
+        AppUser appUser = getUser(userDTO.getUsername());
+        appUser.setName(userDTO.getName());
+        appUser.setUserRole(userDTO.getUserRole());
+
+        return this.appUserRepository.save(appUser);
     }
 }
