@@ -11,8 +11,6 @@ public interface TokenManagerService {
 
     String createAppUserToken(HttpServletRequest request, Authentication authentication);
 
-    AppUser decodeAppUserToken(HttpServletRequest request);
-
     void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
     void tokenDecodeError(Exception e, HttpServletResponse response) throws IOException;

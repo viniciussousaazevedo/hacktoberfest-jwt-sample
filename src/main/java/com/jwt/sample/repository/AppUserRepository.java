@@ -3,7 +3,6 @@ package com.jwt.sample.repository;
 
 import com.jwt.sample.model.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +13,6 @@ import java.util.Optional;
 public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     Optional<AppUser> findByUsername(String username);
-
-    Optional<AppUser> findByRecoveryPasswordToken(String token);
 
 
 }

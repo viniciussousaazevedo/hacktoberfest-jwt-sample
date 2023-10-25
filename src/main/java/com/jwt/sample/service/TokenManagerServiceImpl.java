@@ -65,24 +65,6 @@ public class TokenManagerServiceImpl implements TokenManagerService {
     }
 
     @Override
-    public AppUser decodeAppUserToken(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-
-        if (authorizationHeader != null && authorizationHeader.startsWith(BEARER)) {
-            try {
-                Algorithm algorithm = Algorithm.HMAC256(SECRET_WORD_FOR_TOKEN_GENERATION.getBytes());
-                String token = authorizationHeader.substring(BEARER.length());
-                return decodeToken(token, algorithm);
-
-            } catch (Exception e) {
-                throw new ApiRequestException(e.getMessage());
-            }
-        } else {
-            throw new ApiRequestException(MISSING_TOKEN);
-        }
-    }
-
-    @Override
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // TODO ajeitar tempo de expiração de código para 30 minutos!
         String authorizationHeader = request.getHeader(AUTHORIZATION);

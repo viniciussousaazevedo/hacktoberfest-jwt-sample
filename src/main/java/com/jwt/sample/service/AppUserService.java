@@ -16,12 +16,4 @@ public interface AppUserService extends UserDetailsService {
 
     void saveUser(AppUser appUser);
 
-    void checkPasswordConfirmation(String password, String passwordConfirmation);
-
-    AppUser updateUser(UserDTO user);
-
-    String forgotPassword(String username);
-
-    String changePassword(String token, NewPasswordDTO newPasswordDTO);
-
 }

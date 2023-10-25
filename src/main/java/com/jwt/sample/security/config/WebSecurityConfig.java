@@ -50,7 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        AUTHORED ENDPOINT EXAMPLE
 //        http.authorizeRequests().antMatchers(GET, "/api/publicacao/analise" + PERMIT_ALL_AFTER).hasAnyAuthority(UserRole.ADMINISTRADOR.name());
-        http.authorizeRequests().antMatchers(PUT, "/api/usuario/atualizar").hasAnyAuthority(UserRole.ADMIN.name());
 
 
         http.authorizeRequests().anyRequest().authenticated();

@@ -25,7 +25,7 @@ public class AppUser implements UserDetails {
     private String name;
 
     @EqualsAndHashCode.Include
-    private String username;
+    private String username; // == e-mail
 
     private String password;
 
@@ -35,10 +35,6 @@ public class AppUser implements UserDetails {
     private Boolean locked = false;
 
     private Boolean enabled = true;
-
-    private String recoveryPasswordToken;
-
-    private Date recoveryPasswordTokenExpiration;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
