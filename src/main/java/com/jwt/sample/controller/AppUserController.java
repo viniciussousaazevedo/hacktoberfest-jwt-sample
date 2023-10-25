@@ -47,6 +47,8 @@ public class AppUserController {
 
     // TODO: Forgot password
 
+    // TODO: Updates users with DEFAULT role
+
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         this.tokenDecoder.refreshToken(request, response);
