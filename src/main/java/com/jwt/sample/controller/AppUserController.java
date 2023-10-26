@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,10 +53,12 @@ public class AppUserController {
     @PutMapping("/atualizar")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO user) {
         return ResponseEntity.ok(this.modelMapper.map(appUserService.updateUser(user), UserDTO.class));
+    }
   
     @PostMapping("/esqueci-senha/{token}")
     public ResponseEntity<?> changePassword(@PathVariable String token, @RequestBody NewPasswordDTO newPasswordDTO) {
         return ResponseEntity.ok(appUserService.changePassword(token, newPasswordDTO));
+    }
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
